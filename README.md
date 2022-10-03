@@ -1,3 +1,7 @@
+Actividad Semana 1 Frameworks Front End
+
+Creacion estructura estatica proyecto 'three pics'
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
