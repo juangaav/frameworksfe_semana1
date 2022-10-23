@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Postlist from './components/Postlist';
 import Searchbar from './components/Searchbar';
 import ProfileView from './components/ProfileView';
+import Login from './components/Login';
 import viejo from "./img/viejo.jpg";
 import React, {useState} from 'react';
 
@@ -34,6 +35,7 @@ function App() {
   const [posts, setPosts] = useState(initialPosts);
   const [section, setSection] = useState("postlist");
   const [value, setValue] = useState("");
+  const [token, setToken] = useState();
 
   function onSearch(value){
     setValue(value);
@@ -55,10 +57,18 @@ function App() {
   return (
     <div className="App">
       <Navbar onLogoClick={onLogoClick} onProfileClick={onProfileClick}/>
-      <Searchbar value={value} onSearch={onSearch}/>
-      {section === "postlist"
-        ? <Postlist posts={posts}/>
-        : <ProfileView />}
+      <div className="container">
+        {token ? (
+          <>
+        <Searchbar value={value} onSearch={onSearch}/>
+        {section === "postlist"
+          ? <Postlist posts={posts}/>
+          : <ProfileView />}
+          </>
+        ) : (
+          <Login setToken={setToken} />
+        )}
+      </div>
     </div>
   );
 }
