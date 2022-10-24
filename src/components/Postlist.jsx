@@ -1,19 +1,38 @@
 import Post from "./Post";
+import React, {useState, useEffect} from 'react';
+import { getPosts } from "../service/data-service";
 
-function Postlist({posts}){
-    return (
-        <div className="d-flex flex-column">
-          {posts.map((post, i) => (
-            <Post
-            key={i}
-            postage={post.age}
-            img={post.img}
-            author={post.author}
-            description={post.description}
-            likes={post.likes}
-            comments={post.comments}/>
-          ))}
-        </div>
-      );
+const initialState = [];
+
+function Postlist(props){
+  const [posts, setPosts] = useState(initialState);
+
+  useEffect(() => {
+    getPosts().then((post) => {
+      setPosts(post);
+    })
+    .catch(() => {
+      props.setToken("");
+    });
+  });
+  
+  return (
+    <div className="d-flex flex-column">
+      {posts === initialState
+        ? "Loading..."
+        : posts
+        .filter((e) => e.text.includes(props.search))
+        .map((post) => (
+          <Post
+          id={post.id}
+          postage={post.createdAt}
+          image={post.image}
+          text={post.text}
+          author={post.author}
+          likes={post.likes}
+          comments={post.comments}/>
+      ))}
+    </div>
+  );
 }
 export default Postlist;

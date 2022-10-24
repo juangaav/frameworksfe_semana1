@@ -4,47 +4,14 @@ import Postlist from './components/Postlist';
 import Searchbar from './components/Searchbar';
 import ProfileView from './components/ProfileView';
 import Login from './components/Login';
-import viejo from "./img/viejo.jpg";
 import React, {useState} from 'react';
 
 function App() {
-  const initialPosts = [{
-    age: "3min ago",
-    img: {viejo},
-    author: "@thedogist",
-    description: "Post from dog photographer",
-    likes: 100,
-    comments: 300
-  },
-  {
-    age: "15h ago",
-    img: {viejo},
-    author: "@food",
-    description: "Food post from the famous food account",
-    likes: 200,
-    comments: 100
-  },
-  {
-    age: "2y ago",
-    img: {viejo},
-    author: "@singer",
-    description: "Popular post from hit singer",
-    likes: 130,
-    comments: 5500
-  }]
-  const [posts, setPosts] = useState(initialPosts);
+  
   const [section, setSection] = useState("postlist");
-  const [value, setValue] = useState("");
-  const [token, setToken] = useState();
-
-  function onSearch(value){
-    setValue(value);
-    if(value === ""){
-      setPosts(initialPosts)
-    }else{
-      setPosts(posts.filter(val => val.author.includes(value) || val.description.includes(value)));
-    }
-  }
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [search, setSearch] = useState("");
+  const [currentUser, setCurrentUser] = useState();
 
   function onLogoClick(){
     setSection("postlist");  
@@ -54,16 +21,30 @@ function App() {
     setSection("profileview"); 
   }
 
+  function doSearch(text) {
+    setSearch(text);
+  }
+
+  function onLogout(){
+    localStorage.setItem("token", "");
+    setToken("");
+    setSection("postlist");  
+  }
+
+  function doSetCurrentUser(newUserValue){
+    setCurrentUser(newUserValue);
+  }
+
   return (
     <div className="App">
       <Navbar onLogoClick={onLogoClick} onProfileClick={onProfileClick}/>
       <div className="container">
         {token ? (
           <>
-        <Searchbar value={value} onSearch={onSearch}/>
+        <Searchbar search={search} doSearch={doSearch}/>
         {section === "postlist"
-          ? <Postlist posts={posts}/>
-          : <ProfileView />}
+          ? <Postlist search={search} setToken={setToken} />
+          : <ProfileView onLogout={onLogout} doSetCurrentUser={doSetCurrentUser}/>}
           </>
         ) : (
           <Login setToken={setToken} />

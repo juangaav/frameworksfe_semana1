@@ -9,9 +9,9 @@ function Searchbar(props){
         placeholder="Search" 
         aria-label="Search" 
         onChange={(event) =>{
-            props.onSearch(event.target.value);
-        }} 
-        value={props.value} />
+            props.doSearch(event.target.value);
+        }}
+        value={props.search} />
         </form>
         </nav>
     );

@@ -4,18 +4,23 @@ import { login } from "../service/data-service";
 function Login({ setToken, onLoginComplete }) {
     const [error, setError] = useState();
 
+    function setTokenValue(value){
+      localStorage.setItem("token", value);
+      setToken(value);
+    }
+
     function handleSubmit(event) {
-        event.preventDefault();
-        const form = event.target;
-    
-        login(form.username.value, form.password.value)
-          .then((data) => {
-            localStorage.setItem("token", data.token);
-            setToken(data.token);
-        })
-          .catch((err) => {
-            setError(err.response.data.message);
-        });
+      event.preventDefault();
+      const form = event.target;
+  
+      login(form.username.value, form.password.value)
+        .then((data) => {
+          setTokenValue(data.token);
+      })
+        .catch((err) => {
+          setError(err.message);
+          setTokenValue("");
+      });
     }
 
     return (
