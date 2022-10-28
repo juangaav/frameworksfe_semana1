@@ -4,7 +4,13 @@ function LikeButton(props) {
 
     function changeLikes(){
         setLikes(likes + 1);
-        like(props.id);
+        like(props.id)
+        .catch((err) => {
+            if(err.response.status === 401){
+                localStorage.setItem("token", "");
+                props.setToken("");
+            }
+        });
     }
 
     const [likes, setLikes] = useState(props.likes);

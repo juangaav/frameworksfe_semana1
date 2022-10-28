@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { login } from "../service/data-service";
+import { getUser } from "../service/data-service";
 
-function Login({ setToken, onLoginComplete }) {
+function Login({ setToken, onLoginComplete, doSetCurrentUser }) {
     const [error, setError] = useState();
 
     function setTokenValue(value){
@@ -16,7 +17,19 @@ function Login({ setToken, onLoginComplete }) {
       login(form.username.value, form.password.value)
         .then((data) => {
           setTokenValue(data.token);
-      })
+          getUser()
+          .then((data) => {
+            localStorage.setItem("user",  JSON.stringify(data));
+            doSetCurrentUser(data);
+          })
+          .catch((err) => {
+            if(err.response.status === 401){
+              localStorage.setItem("user", "");
+              localStorage.setItem("token", "");
+              setTokenValue("");
+            }
+          });
+        })
         .catch((err) => {
           setError(err.message);
           setTokenValue("");

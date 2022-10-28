@@ -11,8 +11,11 @@ function Postlist(props){
     getPosts().then((post) => {
       setPosts(post);
     })
-    .catch(() => {
-      props.setToken("");
+    .catch((err) => {
+      if(err.response.status === 401){
+          localStorage.setItem("token", "");
+          props.setToken("");
+      }
     });
   });
   
@@ -30,7 +33,8 @@ function Postlist(props){
           text={post.text}
           author={post.author}
           likes={post.likes}
-          comments={post.comments}/>
+          comments={post.comments}
+          setToken={props.setToken}/>
       ))}
     </div>
   );

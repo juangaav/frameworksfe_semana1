@@ -1,9 +1,7 @@
 import './App.css';
 import Navbar from './components/Navbar';
-import Postlist from './components/Postlist';
-import Searchbar from './components/Searchbar';
-import ProfileView from './components/ProfileView';
-import Login from './components/Login';
+import Home from './screens/Home';
+import { Route, Routes } from 'react-router';
 import React, {useState} from 'react';
 
 function App() {
@@ -39,16 +37,9 @@ function App() {
     <div className="App">
       <Navbar onLogoClick={onLogoClick} onProfileClick={onProfileClick}/>
       <div className="container">
-        {token ? (
-          <>
-        <Searchbar search={search} doSearch={doSearch}/>
-        {section === "postlist"
-          ? <Postlist search={search} setToken={setToken} />
-          : <ProfileView onLogout={onLogout} doSetCurrentUser={doSetCurrentUser}/>}
-          </>
-        ) : (
-          <Login setToken={setToken} />
-        )}
+        <Routes>
+          <Route path="/" element={Home(onLogoClick, onProfileClick, doSearch, search, setToken, token, section, onLogout, doSetCurrentUser)}/>
+        </Routes>  
       </div>
     </div>
   );
