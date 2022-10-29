@@ -1,23 +1,13 @@
 import Postlist from "../components/Postlist";
-import Navbar from "../components/Postlist";
-import Searchbar from "../components/Postlist";
-import ProfileView from "../components/Postlist";
-import Login from "../components/Postlist";
+import Navbar from "../components/Navbar";
+import Searchbar from "../components/Searchbar";
 
-function Home(onLogoClick, onProfileClick, doSearch, search, setToken, token, section, onLogout, doSetCurrentUser) {
+function Home(doSearch, search, setToken) {
     return(
         <div className="Home">
-        <Navbar onLogoClick={onLogoClick} onProfileClick={onProfileClick}/>
-        {token ? (
-          <>
-        <Searchbar search={search} doSearch={doSearch}/>
-        {section === "postlist"
-          ? <Postlist search={search} setToken={setToken} />
-          : <ProfileView onLogout={onLogout}/>}
-          </>
-        ) : (
-          <Login setToken={setToken} doSetCurrentUser={doSetCurrentUser}/>
-        )}
+          <Navbar/>
+          <Searchbar search={search} doSearch={doSearch}/>
+          <Postlist search={search} setToken={setToken} />
         </div>
     );
 }

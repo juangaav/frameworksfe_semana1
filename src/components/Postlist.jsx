@@ -1,12 +1,19 @@
 import Post from "./Post";
 import React, {useState, useEffect} from 'react';
 import { getPosts } from "../service/data-service";
+import { useNavigate } from 'react-router';
 
 const initialState = [];
 
 function Postlist(props){
   const [posts, setPosts] = useState(initialState);
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  const navigate = useNavigate();
+  if(!user){
+    navigate("/login");
+  }
+  
   useEffect(() => {
     getPosts().then((post) => {
       setPosts(post);

@@ -1,5 +1,12 @@
+import { useNavigate } from 'react-router';
 function ProfileView(props) {
+    const navigate = useNavigate();
+
     const user = JSON.parse(localStorage.getItem("user"));
+    if(!user){
+      navigate("/login");
+    }
+
     return (
       <div className="d-flex flex-column align-items-center">
         <img src={user.avatar} width="100" height="100" className="rounded-circle " alt="Profile"/>

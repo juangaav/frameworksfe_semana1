@@ -37,7 +37,7 @@ function Login({ setToken, onLoginComplete, doSetCurrentUser }) {
     }
 
     return (
-        <div>
+        <div className="mt-3">
         {error && <div className="alert alert-danger">{error}</div>}
         <form onSubmit={handleSubmit}>
           <input
